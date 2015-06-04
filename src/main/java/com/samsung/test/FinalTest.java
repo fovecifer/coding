@@ -86,7 +86,7 @@ public class FinalTest {
 		int point1 = 0;
 		int point2 = 0;
 		if(robotXY1[0] == robotXY2[0]) {
-			// compare X
+			// compare Y
 			int big = R;
 			int small = -R;
 			for(int i = 0; i < res.size(); i++) {
@@ -101,7 +101,20 @@ public class FinalTest {
 				}
 			}
 		}else {
-			// compare Y
+			// compare X
+			int big = R;
+			int small = -R;
+			for(int i = 0; i < res.size(); i++) {
+				int[] toCheck = conFrom(res.get(i), R);
+				int t1 = toCheck[0] - robotXY1[0];
+				if(t1 > 0 && t1 < big) {
+					big = t1;
+					point1 = res.get(i);
+				}else if(t1 < 0 && t1 > small) {
+					small = t1;
+					point2 = res.get(i);
+				}
+			}
 		}
 		
 		int[] result = new int[res.size()];
