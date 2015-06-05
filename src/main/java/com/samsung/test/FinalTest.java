@@ -3,6 +3,7 @@ package com.samsung.test;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -32,9 +33,52 @@ public class FinalTest {
             for(int j = 0; j < N; j++) {
                 sum += shotedNum[j];
             }
-            System.out.format("#%d %d\n", (i + 1), sum);
+            
+            int[] A = new int[2 * shotedNum.length];
+            
+            for(int a= 0; a < N; a++) {
+            	A[a] = shotedNum[a];
+            }
+            
+            int[] B = new int[2 * N + 1];
+            int[] C = new int[N];
+            
+            for(int a = 0; a < N; a++) {
+            	for(int b = 0; b < N; b++) {
+            		A[b] = ((A[b] * K + (b + 1)) % N) + 1;
+            		A[N + b] = ((A[b] * (b + 1) + K) % N) + 1;
+            	}
+            	
+            	A = sort(A);
+            	B[0] = 1;
+                for(int b = 1; b <= (2*N); b++) {
+                	B[b] = ((B[b - 1] * A[b - 1] + b) % N) + 1; 
+                }
+                C[a] = B[2 * N];
+            }
+            
+            int sum2 = 0;
+            for(int j = 0; j < N; j++) {
+                sum2 += C[j];
+            }
+            
+            System.out.format("#%d %d %d\n", (i + 1), sum, sum2);
         }
 
+    }
+    
+    private static int[] sort(int[] input) {
+    	List<Integer> tmp = new ArrayList<Integer>(input.length);
+    	int[] result = new int[input.length];
+    	
+    	for(int i = 0; i < input.length; i++) {
+    		tmp.add(Integer.valueOf(input[i]));
+    	}
+    	Collections.sort(tmp);
+    	for(int i = 0; i < input.length; i++) {
+    		result[i] = tmp.get(i);
+    	}
+    	return result;
     }
 
     private static int getShotedNum(int index, int[] robots, int R, int N, int K) {
@@ -90,8 +134,8 @@ public class FinalTest {
                 }
             }
         } else {
-            int a = (robotXY2[1] - robotXY1[1]) / (robotXY2[0] - robotXY1[0]);
-            int b = robotXY1[1] - a * robotXY1[0];
+            double a = (double)(robotXY2[1] - robotXY1[1]) / (double)(robotXY2[0] - robotXY1[0]);
+            double b = (robotXY1[1] - a * robotXY1[0]);
 
             for (int i = 0; i < robots.length; i++) {
                 if (robots[i] == robot1 || robots[i] == robot2) {
