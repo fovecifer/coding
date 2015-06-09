@@ -1,5 +1,6 @@
 package com.samsung.test;
 
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -189,7 +190,7 @@ public class FinalTest {
             return result;
         } else {
             result = new int[1];
-            if (point1 != 0) {
+            if (point1 != -1) {
                 result[0] = point1;
             } else {
                 result[0] = point2;
