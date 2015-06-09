@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.HashSet;
 
 public class FinalTest {
 
@@ -83,7 +81,11 @@ public class FinalTest {
     }
 
     private static int getShotedNum(int index, int[] robots, int R, int N, int K) {
-        Set<Integer> shotedSet = new HashSet<Integer>();
+        int[] shotedSet = new int[N];
+        int size = 0;
+        for(int i = 0; i < N; i++) {
+            shotedSet[i] = -1;
+        }
 
         for (int i = 0; i < N; i++) {
             if (index == i) {
@@ -98,10 +100,19 @@ public class FinalTest {
 
             int[] shotedRobots = getRobotsShoted(robot, target, robots, R);
             for(int t : shotedRobots) {
-                shotedSet.add(Integer.valueOf(t));
+                boolean has = false;
+                for(int j = 0; j < size; j++) {
+                    if(t == shotedSet[j]) {
+                        has = true;
+                        break;
+                    }
+                }
+                if(!has) {
+                    shotedSet[size++] = t;
+                }
             }
         }
-        return shotedSet.size();
+        return size;
     }
 
     private static int[] getRobotsShoted(int robot1, int robot2, int[] robots, int R) {
