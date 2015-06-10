@@ -3,9 +3,6 @@ package com.samsung.test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Scanner;
 
 public class FinalTest {
@@ -48,7 +45,7 @@ public class FinalTest {
             		A[N + b] = ((A[b] * (b + 1) + K) % N) + 1;
             	}
             	
-            	A = sort(A);
+            	A = insertSort(A);
             	B[0] = 1;
                 for(int b = 1; b <= (2*N); b++) {
                 	B[b] = ((B[b - 1] * A[b - 1] + b) % N) + 1; 
@@ -66,18 +63,20 @@ public class FinalTest {
 
     }
     
-    private static int[] sort(int[] input) {
-    	List<Integer> tmp = new ArrayList<Integer>(input.length);
-    	int[] result = new int[input.length];
-    	
-    	for(int i = 0; i < input.length; i++) {
-    		tmp.add(Integer.valueOf(input[i]));
-    	}
-    	Collections.sort(tmp);
-    	for(int i = 0; i < input.length; i++) {
-    		result[i] = tmp.get(i);
-    	}
-    	return result;
+    private static int[] insertSort(int[] input) {
+        for(int i = 1; i < input.length; i++) {
+            for(int j = 0; j < i; j++) {
+                if(input[i] < input[j]) {
+                    int tmp = input[i];
+                    for(int k = (i - 1); k >= j; k--) {
+                        input[k + 1] = input[k];
+                    }
+                    input[j] = tmp;
+                    break;
+                }
+            }
+        }
+        return input;
     }
 
     private static int getShotedNum(int index, int[] robots, int R, int N, int K) {
@@ -114,14 +113,24 @@ public class FinalTest {
         }
         return size;
     }
+    
+    private static int[] addToArray(int[] old, int toAdd) {
+        int[] result = new int[old.length + 1];
+        for(int i = 0; i < old.length; i++) {
+            result[i] = old[i];
+        }
+        result[old.length] = toAdd;
+        return result;
+    }
 
     private static int[] getRobotsShoted(int robot1, int robot2, int[] robots, int R) {
-        List<Integer> res = new ArrayList<Integer>();
+        int[] res = new int[0];
+        int size = 0;
         int[] robotXY1 = conFrom(robot1, R);
         int[] robotXY2 = conFrom(robot2, R);
 
         //  a * x + b = y 
-        res.add(Integer.valueOf(robot2));
+        res = addToArray(res, robot2);
 
         if ((robotXY2[1] - robotXY1[1]) == 0) {
             // y = robotXY2[1]
@@ -131,7 +140,7 @@ public class FinalTest {
                 }
                 int[] xy = conFrom(robots[i], R);
                 if (xy[1] == robotXY2[1]) {
-                    res.add(Integer.valueOf(robots[i]));
+                    res = addToArray(res, robots[i]);
                 }
             }
         } else if ((robotXY2[0] - robotXY1[0]) == 0) {
@@ -142,7 +151,7 @@ public class FinalTest {
                 }
                 int[] xy = conFrom(robots[i], R);
                 if (xy[0] == robotXY2[0]) {
-                    res.add(Integer.valueOf(robots[i]));
+                    res = addToArray(res, robots[i]);
                 }
             }
         } else {
@@ -155,7 +164,7 @@ public class FinalTest {
                 }
                 int[] xy = conFrom(robots[i], R);
                 if (a * xy[0] + b == xy[1]) {
-                    res.add(Integer.valueOf(robots[i]));
+                    res = addToArray(res, robots[i]);
                 }
             }
         }
@@ -166,30 +175,30 @@ public class FinalTest {
             // compare Y
             int big = R;
             int small = -R;
-            for (int i = 0; i < res.size(); i++) {
-                int[] toCheck = conFrom(res.get(i), R);
+            for (int i = 0; i < res.length; i++) {
+                int[] toCheck = conFrom(res[i], R);
                 int t1 = toCheck[1] - robotXY1[1];
                 if (t1 > 0 && t1 < big) {
                     big = t1;
-                    point1 = res.get(i);
+                    point1 = res[i];
                 } else if (t1 < 0 && t1 > small) {
                     small = t1;
-                    point2 = res.get(i);
+                    point2 = res[i];
                 }
             }
         } else {
             // compare X
             int big = R;
             int small = -R;
-            for (int i = 0; i < res.size(); i++) {
-                int[] toCheck = conFrom(res.get(i), R);
+            for (int i = 0; i < res.length; i++) {
+                int[] toCheck = conFrom(res[i], R);
                 int t1 = toCheck[0] - robotXY1[0];
                 if (t1 > 0 && t1 < big) {
                     big = t1;
-                    point1 = res.get(i);
+                    point1 = res[i];
                 } else if (t1 < 0 && t1 > small) {
                     small = t1;
-                    point2 = res.get(i);
+                    point2 = res[i];
                 }
             }
         }
