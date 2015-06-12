@@ -16,7 +16,7 @@ public class HumanNetwork {
 			/* init input */
 			for(int j = 0; j < N; j++) {
 				for(int k = 0; k < N; k++) {
-					data[j][k] = scanner.nextInt();
+					data[k][j] = scanner.nextInt();
 				}
 			}
 			int[] ccArray = new int[N];
@@ -46,12 +46,12 @@ public class HumanNetwork {
 			path++;
 			for(int j = 0; j < nexts.length; j++) {
 				if(nexts[j] == target) return path;
-				insert(passed, nexts[j]);
+				passed = insert(passed, nexts[j]);
 			}
 			for(int j = 0; j < nexts.length; j++) {
 				int[] next = getNexts(data, nexts[j], passed);
 				for(int k = 0; k < next.length; k++) {
-					insert(tmp, next[k]);
+					tmp = insert(tmp, next[k]);
 				}
 			}
 			nexts = null;
@@ -84,6 +84,7 @@ public class HumanNetwork {
 		}
 		result[array.length] = t;
 		array = null;
+		array = result;
 		return result;
 	}
 	
