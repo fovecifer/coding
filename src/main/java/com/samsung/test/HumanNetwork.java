@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class HumanNetwork {
+	private static final int UNDEFINE = -1;
 
 	public static void main(String[] args) throws FileNotFoundException {
 		Scanner scanner = new Scanner(new File("humannetwork.input"));
@@ -30,9 +31,39 @@ public class HumanNetwork {
 	private static int CC(int[][] data, int node) {
 		int result = 0;
 		for(int i = 0; i < data[0].length; i++) {
-			result += closest(data, node, i);
+			result += closest2(data, node, i);
 		}
 		return result;
+	}
+	
+	private static int closest2(int[][]data, int source, int target) {
+		if(source == target) return 0;
+		int[] previous = new int[data[0].length];
+		int[] distance = new int[data[0].length];
+		int[] S = new int[0];
+		for(int i = 0; i < previous.length; i++) {
+			previous[i] = UNDEFINE;
+			distance[i] = Integer.MAX_VALUE;
+		}
+		distance[source] = 0;
+		previous[source] = source;
+		int[] nexts = getNexts(data, source, S);
+		int path = 0;
+		while(nexts.length > 0) {
+			path++;
+			for(int n : nexts) {
+				int cursor = S.length - 1;
+				if(distance[n] > (distance[S[cursor]] + 1)) {
+					distance[n] = distance[S[cursor]] + 1;
+					previous[n] = S[cursor];
+					S = insert(S, n);
+				}
+				if(n == target) {
+					return distance[n];
+				}
+			}
+		}
+		return UNDEFINE;
 	}
 	
 	private static int closest(int[][]data, int source, int target) {
