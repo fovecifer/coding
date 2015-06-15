@@ -37,34 +37,59 @@ public class HumanNetwork {
 	}
 	
 	private static int closest2(int[][]data, int source, int target) {
+            if(target == 3) {
+                int debug = 0;
+            }
 		if(source == target) return 0;
 		int[] previous = new int[data[0].length];
 		int[] distance = new int[data[0].length];
 		int[] S = new int[0];
+                int[] Q = new int[data[0].length];
 		for(int i = 0; i < previous.length; i++) {
 			previous[i] = UNDEFINE;
 			distance[i] = Integer.MAX_VALUE;
+                        Q[i] = i;
 		}
 		distance[source] = 0;
-		previous[source] = source;
-		int[] nexts = getNexts(data, source, S);
-		int path = 0;
-		while(nexts.length > 0) {
-			path++;
-			for(int n : nexts) {
-				int cursor = S.length - 1;
-				if(distance[n] > (distance[S[cursor]] + 1)) {
-					distance[n] = distance[S[cursor]] + 1;
-					previous[n] = S[cursor];
-					S = insert(S, n);
+		
+		while(length(Q) > 0) {
+                    int u = extractMin(Q, distance);
+                    S = insert(S, u);
+                    int[] nexts = getNexts(data, u);
+			for(int v : nexts) {
+				if(distance[v] > (distance[u] + 1)) {
+					distance[v] = distance[u] + 1;
+					previous[v] = u;
 				}
-				if(n == target) {
-					return distance[n];
+				if(v == target) {
+					return distance[v];
 				}
 			}
 		}
 		return UNDEFINE;
 	}
+        
+        private static int length(int[] Q) {
+            int size = 0;
+            for(int i = 0; i < Q.length; i++) {
+                if(Q[i] != Integer.MAX_VALUE) size++;
+            }
+            return size;
+        }
+        
+        private static int extractMin(int[] Q, int[] distance) {
+            int minDistance = Integer.MAX_VALUE;
+            int node = UNDEFINE;
+            for(int i = 0; i < Q.length; i++) {
+                if(Q[i] == Integer.MAX_VALUE) continue;
+                if(distance[i] < minDistance) {
+                    minDistance = distance[i];
+                    node = i;
+                }
+            }
+            Q[node] = Integer.MAX_VALUE;
+            return node;
+        }
 	
 	private static int closest(int[][]data, int source, int target) {
 		int path = 0;
@@ -100,6 +125,16 @@ public class HumanNetwork {
 		}
 		return result;
 	}
+        
+        private static int[] getNexts(int[][] data, int source) {
+		int[] result = new int[0];
+		for(int i = 0; i < data[0].length; i++) {
+			if(data[source][i] == 1) {
+				result = insert(result, i);
+			}
+		}
+		return result;
+	}
 	
 	private static boolean isIn(int toCheck, int[] passed) {
 		for(int i = 0; i < passed.length; i++) {
@@ -118,6 +153,20 @@ public class HumanNetwork {
 		array = result;
 		return result;
 	}
+        
+        private static int[] remove(int[] array, int t) {
+            int[] result = new int[array.length - 1];
+            int j = 0;
+            for(int i = 0; i < array.length; i++) {
+                if(array[i] == t) {
+                    continue;
+                }else {
+                    result[j] = array[i];
+                }
+                j++;
+            }
+            return result;
+        }
 	
 	private static int min(int[] input) {
 		int result = 1 << 8;
