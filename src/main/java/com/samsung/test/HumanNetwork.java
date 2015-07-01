@@ -37,9 +37,6 @@ public class HumanNetwork {
 	}
 	
 	private static int closest2(int[][]data, int source, int target) {
-            if(target == 3) {
-                int debug = 0;
-            }
 		if(source == target) return 0;
 		int[] previous = new int[data[0].length];
 		int[] distance = new int[data[0].length];
