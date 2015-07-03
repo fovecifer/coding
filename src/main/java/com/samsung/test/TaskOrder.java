@@ -19,14 +19,43 @@ public class TaskOrder {
 				int b = scanner.nextInt();
 				int t = scanner.nextInt();
 				
-				graph[b - 1][t - 1] = EXIST;
+				graph[t - 1][b - 1] = EXIST;
 			}
 			
 			System.out.format("%d# ", (i + 1));
-			printTasks(graph, E);
+			printTasks2(graph, V, E);
 			System.out.println();
 		}
 
+	}
+	
+	private static void printTasks2(int[][] graph, int V, int E) {
+		int[] printed = new int[V];
+		
+		while(E > 0) {
+			for(int i = 0; i < V; i++) {
+				boolean has = false;
+				for(int j = 0; j < V; j++) {
+					if(graph[i][j] == EXIST){
+						has = true;
+						break;
+					}
+				}
+				if(!has && printed[i] == NOT_EXIST) {
+					System.out.format("%d ", (i + 1));
+					printed[i] = EXIST;
+					for(int j = 0; j < V; j++) {
+						graph[j][i] = NOT_EXIST;
+					}
+					E--;
+				}
+			}
+		}
+		for(int i = 0; i < V; i++) {
+			if(printed[i] == NOT_EXIST) {
+				System.out.format("%d ", (i + 1));
+			}
+		}
 	}
 	
 	private static void printTasks(int[][] graph, int E) {
