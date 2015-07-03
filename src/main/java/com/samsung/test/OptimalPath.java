@@ -30,8 +30,32 @@ public class OptimalPath {
             
             List<List<Node>> res = getOrders(nodeList);
             
-            printNode(res);
+            int result = getShorest(res, office, home);
+            
+            System.out.format("#%d %d\n", (i + 1), result);
         }
+    }
+    
+    private static int getShorest(List<List<Node>> input, Node office, Node home) {
+    	int result = Integer.MAX_VALUE;
+    	for(List<Node> c : input) {
+    		int t = getDistance(c, office, home);
+    		if(t < result) {
+    			result = t;
+    		}
+    	}
+    	return result;
+    }
+    
+    private static int getDistance(List<Node> list, Node office, Node home) {
+    	int result = 0;
+    	Node s = office;
+    	for(Node node : list) {
+    		result += s.distance(node);
+    		s = node;
+    	}
+    	result += s.distance(home);
+    	return result;
     }
     
     private static void printNode(List<List<Node>> res) {
