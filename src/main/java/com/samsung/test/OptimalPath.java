@@ -16,7 +16,8 @@ public class OptimalPath {
 
     public static void main(String[] args) throws FileNotFoundException {
         Scanner scanner = new Scanner(new File("optimalpath.input"));
-        for(int i = 0; i < 10; i++) {
+        int caseNum = scanner.nextInt();
+        for(int i = 0; i < caseNum; i++) {
             int N = scanner.nextInt();
             
             Node office = new Node(scanner.nextInt(), scanner.nextInt());
@@ -27,14 +28,45 @@ public class OptimalPath {
                 nodeList.add(new Node(scanner.nextInt(), scanner.nextInt()));
             }
             
+            List<List<Node>> res = getOrders(nodeList);
             
+            printNode(res);
         }
     }
     
-    private static LinkedList<List<Node>> getOrders(LinkedList<Node> input) {
+    private static void printNode(List<List<Node>> res) {
+    	System.out.println("Total: " + res.size());
+    	for(List<Node> l : res) {
+    		for(Node node : l) {
+    			System.out.format("Node(%d,%d) ", node.getX(), node.getY());
+    		}
+    		System.out.println();
+    	}
+    }
+    
+    private static List<List<Node>> getOrders(List<Node> input) {
         int size = input.size();
-        LinkedList<List<Node>> result = new LinkedList<List<Node>>();
+        
+        List<List<Node>> result = new LinkedList<List<Node>>();
         for(int i = 0; i < size; i++) {
+        	Node node = input.get(i);
+        	List<Node> input2 = new ArrayList<Node>(input.size() - 1);
+        	for(int j = 0; j < input.size(); j++) {
+        		if(j == i) continue;
+        		input2.add(input.get(j));
+        	}
+        	List<List<Node>> res = getOrders(input2);
+
+        	if(res.size() == 0) {
+        		List<Node> r = new ArrayList<Node>(1);
+        		r.add(node);
+        		result.add(r);
+        	}else {
+        		for(List<Node> n : res) {
+            		n.add(0, node);
+            		result.add(n);
+            	}
+        	}
         }
         
         return result;
