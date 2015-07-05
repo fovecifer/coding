@@ -32,13 +32,13 @@ public class OptimalPath {
                 Node node = new Node(scanner.nextInt(), scanner.nextInt());
                 nodeArray[j] = node;
             }
-            int result = combString(nodeArray, office, home);
+            int result = quickPem(nodeArray, office, home);
 
             System.out.format("#%d %d\n", (i + 1), result);
         }
     }
 
-    public static int combString(Node[] nodes, Node office, Node home) {
+    public static int quickPem(Node[] nodes, Node office, Node home) {
 
         int res = Integer.MAX_VALUE;
         //char[] a = s.toCharArray();
