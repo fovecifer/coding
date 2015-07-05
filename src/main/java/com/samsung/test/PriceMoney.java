@@ -7,10 +7,10 @@ import java.util.Arrays;
 /**
  *
  */
-public class PriceMondy {
+public class PriceMoney {
 
     public static void main(String[] args) throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File("prizemondy.input"));
+        Scanner scanner = new Scanner(new File("prizemoney.input"));
         int caseNum = scanner.nextInt();
         
         for(int i = 0; i < caseNum; i++) {
